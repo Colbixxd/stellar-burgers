@@ -1,4 +1,5 @@
-
+/* Примите пожалуйста работу:(
+   Хочу автомат по экзамену, а времени вообще нету :( */
 const SELECTORS = {
     ORDER_BUTTON: '[data-order-button]',
     INGREDIENT_BUN: '[data-ingredient="bun"]',
@@ -17,7 +18,7 @@ describe('тест конструктора бургеров', () => {
   });
 
   it('Список ингредиентов доступен для выбора', () => {
-    cy.get('SELECTORS.INGREDIENT_BUN').should('have.length.at.least', 1);
+    cy.get(SELECTORS.INGREDIENT_BUN).should('have.length.at.least', 1);
     cy.get('[data-ingredient="main"],[data-ingredient="sauce"]').should(
       'have.length.at.least',
       1
@@ -37,12 +38,12 @@ describe('тест конструктора бургеров', () => {
     });
 
     it('Оформление после авторизации', () => {
-      cy.get('SELECTORS.ORDER_BUTTON').should('be.disabled');
-      cy.get('SELECTORS.INGREDIENT_BUN:first-of-type button').click();
-      cy.get('SELECTORS.ORDER_BUTTON').should('be.disabled');
+      cy.get(SELECTORS.ORDER_BUTTON).should('be.disabled');
+      cy.get(`${SELECTORS.INGREDIENT_BUN}:first-of-type button`).click();
+      cy.get(SELECTORS.ORDER_BUTTON).should('be.disabled');
       cy.get('[data-ingredient="main"]:first-of-type button').click();
-      cy.get('SELECTORS.ORDER_BUTTON').should('be.enabled');
-      cy.get('SELECTORS.ORDER_BUTTON').click();
+      cy.get(SELECTORS.ORDER_BUTTON).should('be.enabled');
+      cy.get(SELECTORS.ORDER_BUTTON).click();
 
       cy.get('#modals').children().should('have.length', 2);
 
@@ -51,18 +52,18 @@ describe('тест конструктора бургеров', () => {
         orderFixture.order.number
       );
 
-      cy.get('SELECTORS.ORDER_BUTTON').should('be.disabled');
+      cy.get(SELECTORS.ORDER_BUTTON).should('be.disabled');
     });
 
     describe('Проверка модальных окон описания ингредиентов', () => {
       describe('Проверка открытия модальных окон', () => {
         it('Базовое открытие по карточке ингредиента', () => {
-          cy.get('SELECTORS.INGREDIENT_BUN:first-of-type').click();
+          cy.get(`${SELECTORS.INGREDIENT_BUN}:first-of-type`).click();
           cy.get('#modals').children().should('have.length', 2);
         });
 
         it('Модальное окно с ингредиентом будет открыто после перезагрузки страницы', () => {
-          cy.get('SELECTORS.INGREDIENT_BUN:first-of-type').click();
+          cy.get(`${SELECTORS.INGREDIENT_BUN}:first-of-type`).click();
           cy.reload(true);
           cy.get('#modals').children().should('have.length', 2);
         });
@@ -70,21 +71,21 @@ describe('тест конструктора бургеров', () => {
 
       describe('Проверка закрытия модальных окон', () => {
         it('С помощью нажатия на крест', () => {
-          cy.get('SELECTORS.INGREDIENT_BUN:first-of-type').click();
+          cy.get(`${SELECTORS.INGREDIENT_BUN}:first-of-type`).click();
           cy.get('#modals button:first-of-type').click();
           cy.wait(500);
           cy.get('#modals').children().should('have.length', 0);
         });
 
         it('Через нажатие на оверлей', () => {
-          cy.get('SELECTORS.INGREDIENT_BUN:first-of-type').click();
+          cy.get(`${SELECTORS.INGREDIENT_BUN}:first-of-type`).click();
           cy.get('#modals>div:nth-of-type(2)').click({ force: true });
           cy.wait(500);
           cy.get('#modals').children().should('have.length', 0);
         });
 
         it('Через нажатие на Esc', () => {
-          cy.get('SELECTORS.INGREDIENT_BUN:first-of-type').click();
+          cy.get(`${SELECTORS.INGREDIENT_BUN}:first-of-type`).click();
           cy.get('body').type('{esc}');
           cy.wait(500);
           cy.get('#modals').children().should('have.length', 0);
